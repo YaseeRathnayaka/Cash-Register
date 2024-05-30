@@ -13,12 +13,38 @@ const initialCid = [
   ['ONE HUNDRED', 100],
 ];
 
+const denominationValues = {
+  'PENNY': 0.01,
+  'NICKEL': 0.05,
+  'DIME': 0.10,
+  'QUARTER': 0.25,
+  'ONE': 1.00,
+  'FIVE': 5.00,
+  'TEN': 10.00,
+  'TWENTY': 20.00,
+  'ONE HUNDRED': 100.00
+};
+
 function App() {
   const [cid, setCid] = useState(initialCid);
   const [price, setPrice] = useState('');
   const [cash, setCash] = useState('');
   const [changeDue, setChangeDue] = useState('');
   const [changeBreakdown, setChangeBreakdown] = useState([]);
+  const [totalAmount, setTotalAmount] = useState('');
+  const [balanceAmount, setBalanceAmount] = useState('');
+  const [initialState, setInitialState] = useState(initialCid);
+  const [givenCash, setGivenCash] = useState('');
+
+  const calculateBillsAndCoins = (cid) => {
+    return cid.map(item => {
+      const [name, amount] = item;
+      return [name, Math.floor(amount / denominationValues[name])];
+    });
+  };
+
+  const initialBillsAndCoins = calculateBillsAndCoins(initialState);
+  const updatedBillsAndCoins = calculateBillsAndCoins(cid);
 
   const formatResults = (status, change) => {
     return (
@@ -43,14 +69,19 @@ function App() {
       return;
     }
 
+    setTotalAmount(price);
+    setGivenCash(cash);
+
     if (cashProvided === purchasePrice) {
       setChangeDue('No change due - customer paid with exact cash');
       setChangeBreakdown([]);
+      setBalanceAmount(0);
       setCash('');
       return;
     }
 
     let changeDue = cashProvided - purchasePrice;
+    setBalanceAmount(changeDue);
     let reversedCid = [...cid].reverse();
     let denominations = [100, 20, 10, 5, 1, 0.25, 0.1, 0.05, 0.01];
     let result = { status: 'OPEN', change: [] };
@@ -61,6 +92,7 @@ function App() {
     if (totalCID < changeDue) {
       setChangeDue('Status: INSUFFICIENT_FUNDS');
       setChangeBreakdown([]);
+      setBalanceAmount(0);
       return;
     }
 
@@ -89,6 +121,7 @@ function App() {
     if (changeDue > 0) {
       setChangeDue('Status: INSUFFICIENT_FUNDS');
       setChangeBreakdown([]);
+      setBalanceAmount(0);
       return;
     }
 
@@ -98,18 +131,6 @@ function App() {
   };
 
   const updateUI = (change) => {
-    const currencyNameMap = {
-      PENNY: 'Pennies',
-      NICKEL: 'Nickels',
-      DIME: 'Dimes',
-      QUARTER: 'Quarters',
-      ONE: 'Ones',
-      FIVE: 'Fives',
-      TEN: 'Tens',
-      TWENTY: 'Twenties',
-      'ONE HUNDRED': 'Hundreds',
-    };
-
     if (change) {
       change.forEach((changeArr) => {
         const targetArr = cid.find((cidArr) => cidArr[0] === changeArr[0]);
@@ -128,7 +149,10 @@ function App() {
 
   return (
     <div className="app">
-      <div className="input-section">
+      <div className="header">
+        <h1>Cash Register</h1>
+      </div>
+      <div className="section input-section">
         <label htmlFor="price">Price of Item:</label>
         <input
           type="number"
@@ -147,7 +171,16 @@ function App() {
         />
         <button onClick={handlePurchase}>Purchase</button>
       </div>
-      <div className="result-section">
+      <div className="section result-section">
+        <div id="total-amount">
+          <p><strong>Total Amount:</strong> ${totalAmount}</p>
+        </div>
+        <div id="given-cash">
+          <p><strong>Given Cash:</strong> ${givenCash}</p>
+        </div>
+        <div id="balance-amount">
+          <p><strong>Balance Amount:</strong> ${balanceAmount}</p>
+        </div>
         <div id="change-due" dangerouslySetInnerHTML={{ __html: changeDue }}></div>
         <div className="change-breakdown">
           <p><strong>Change Breakdown:</strong></p>
@@ -158,11 +191,17 @@ function App() {
           ))}
         </div>
       </div>
-      <div id="cash-drawer-display">
-        <p><strong>Change in drawer:</strong></p>
-        {cid.map((money) => (
+      <div className="section" id="cash-drawer-display">
+        <p><strong>Initial Cash in Drawer:</strong></p>
+        {initialBillsAndCoins.map((money) => (
           <p key={money[0]}>
-            {money[0]}: ${money[1]}
+            {money[0]}: {money[1]} pcs
+          </p>
+        ))}
+        <p><strong>Cash in Drawer After Purchase:</strong></p>
+        {updatedBillsAndCoins.map((money) => (
+          <p key={money[0]}>
+            {money[0]}: {money[1]} pcs
           </p>
         ))}
       </div>

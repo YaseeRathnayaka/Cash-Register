@@ -82,6 +82,18 @@ body, html {
   font-size: 16px;
 }
 
+/* Total, given cash, and balance amount */
+#total-amount, #given-cash, #balance-amount {
+  margin: 16px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+#total-amount p, #given-cash p, #balance-amount p {
+  margin: 0;
+  font-weight: bold;
+}
+
 /* Cash drawer display */
 #cash-drawer-display {
   background-color: #f7f7f7;
