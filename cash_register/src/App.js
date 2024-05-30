@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
 
-const price = 3.26;
 const initialCid = [
   ['PENNY', 1.01],
   ['NICKEL', 2.05],
@@ -16,6 +15,7 @@ const initialCid = [
 
 function App() {
   const [cid, setCid] = useState(initialCid);
+  const [price, setPrice] = useState('');
   const [cash, setCash] = useState('');
   const [changeDue, setChangeDue] = useState('');
 
@@ -33,19 +33,22 @@ function App() {
   };
 
   const checkCashRegister = () => {
-    if (Number(cash) < price) {
+    const purchasePrice = parseFloat(price);
+    const cashProvided = parseFloat(cash);
+
+    if (cashProvided < purchasePrice) {
       alert('Customer does not have enough money to purchase the item');
       setCash('');
       return;
     }
 
-    if (Number(cash) === price) {
-      setChangeDue('<p>No change due - customer paid with exact cash</p>');
+    if (cashProvided === purchasePrice) {
+      setChangeDue('No change due - customer paid with exact cash');
       setCash('');
       return;
     }
 
-    let changeDue = Number(cash) - price;
+    let changeDue = cashProvided - purchasePrice;
     let reversedCid = [...cid].reverse();
     let denominations = [100, 20, 10, 5, 1, 0.25, 0.1, 0.05, 0.01];
     let result = { status: 'OPEN', change: [] };
@@ -54,7 +57,7 @@ function App() {
     );
 
     if (totalCID < changeDue) {
-      setChangeDue('<p>Status: INSUFFICIENT_FUNDS</p>');
+      setChangeDue('Status: INSUFFICIENT_FUNDS');
       return;
     }
 
@@ -68,7 +71,7 @@ function App() {
         let total = reversedCid[i][1];
         while (total > 0 && changeDue >= denominations[i]) {
           total -= denominations[i];
-          changeDue = parseFloat((changeDue -= denominations[i]).toFixed(2));
+          changeDue = parseFloat((changeDue - denominations[i]).toFixed(2));
           count++;
         }
         if (count > 0) {
@@ -78,7 +81,7 @@ function App() {
     }
 
     if (changeDue > 0) {
-      setChangeDue('<p>Status: INSUFFICIENT_FUNDS</p>');
+      setChangeDue('Status: INSUFFICIENT_FUNDS');
       return;
     }
 
@@ -111,12 +114,20 @@ function App() {
   };
 
   const handlePurchase = () => {
-    if (!cash) return;
+    if (!price || !cash) return;
     checkCashRegister();
   };
 
   return (
     <div className="app">
+      <label htmlFor="price">Price of Item:</label>
+      <input
+        type="number"
+        id="price"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+        placeholder="Enter price of the item"
+      />
       <label htmlFor="cash">Cash Provided:</label>
       <input
         type="number"
@@ -126,8 +137,7 @@ function App() {
         placeholder="Enter cash provided"
       />
       <button onClick={handlePurchase}>Purchase</button>
-      <div id="change-due" dangerouslySetInnerHTML={{ __html: changeDue }}></div>
-      <div id="price-screen">Total: ${price}</div>
+      <div id="change-due">{changeDue}</div>
       <div id="cash-drawer-display">
         <p><strong>Change in drawer:</strong></p>
         {cid.map((money) => (
