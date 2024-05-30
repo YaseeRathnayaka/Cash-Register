@@ -44,7 +44,6 @@ function App() {
   };
 
   const initialBillsAndCoins = calculateBillsAndCoins(initialState);
-  const updatedBillsAndCoins = calculateBillsAndCoins(cid);
 
   const formatResults = (status, change) => {
     return (
@@ -146,6 +145,8 @@ function App() {
     if (!price || !cash) return;
     checkCashRegister();
   };
+
+  const updatedBillsAndCoins = calculateBillsAndCoins(cid);
 
   return (
     <div className="app">
