@@ -1,112 +1,133 @@
-/* Reset some basic styles for consistency */
-body, html {
+/* App.css */
+
+body {
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
-  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
-/* Container for the whole app */
 .app {
-  background-color: #fff;
+  background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  width: 90%;
-  max-width: 600px;
+  width: 400px;
 }
 
-/* Header */
 .header {
-  background-color: #4CAF50;
+  background-color: #007bff;
   color: white;
-  padding: 16px;
+  padding: 20px;
   text-align: center;
 }
 
-/* Section styles */
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.container {
+  padding: 20px;
+}
+
 .section {
-  padding: 16px;
-  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
 }
 
-.section:last-child {
-  border-bottom: none;
-}
-
-/* Input section */
 .input-section label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   font-weight: bold;
 }
 
 .input-section input {
-  width: calc(100% - 32px);
+  width: 100%;
   padding: 10px;
-  margin-bottom: 16px;
-  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 16px;
+}
+
+.input-section input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .input-section button {
   width: 100%;
-  padding: 12px;
-  background-color: #4CAF50;
+  padding: 10px;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
-  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-size: 16px;
 }
 
 .input-section button:hover {
-  background-color: #45a049;
+  background-color: #0056b3;
 }
 
-/* Result section */
+.result-section {
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
 .result-section p {
-  margin: 8px 0;
-  font-size: 18px;
+  margin: 5px 0;
 }
 
-.change-breakdown p {
-  margin: 4px 0;
-  font-size: 16px;
-}
-
-/* Total, given cash, and balance amount */
-#total-amount, #given-cash, #balance-amount {
-  margin: 16px 0;
-  font-size: 18px;
-  color: #333;
-}
-
-#total-amount p, #given-cash p, #balance-amount p {
-  margin: 0;
+.result-section strong {
   font-weight: bold;
 }
 
-/* Cash drawer display */
-#cash-drawer-display {
-  background-color: #f7f7f7;
-  padding: 16px;
-  border-top: 1px solid #eee;
+.change-breakdown {
+  margin-top: 10px;
 }
 
-#cash-drawer-display p {
-  margin: 8px 0;
-  font-size: 16px;
-  color: #555;
+.cash-drawer-section {
+  margin-top: 20px;
 }
 
-strong {
-  color: #333;
+.cash-drawer-section p {
+  margin: 5px 0;
+}
+
+#change-due {
+  margin-top: 10px;
+}
+
+@media (max-width: 420px) {
+  .app {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .header {
+    padding: 10px;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  .input-section button {
+    font-size: 14px;
+  }
+
+  .result-section {
+    padding: 8px;
+  }
+
+  .cash-drawer-section {
+    margin-top: 15px;
+  }
 }

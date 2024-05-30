@@ -152,58 +152,64 @@ function App() {
       <div className="header">
         <h1>Cash Register</h1>
       </div>
-      <div className="section input-section">
-        <label htmlFor="price">Price of Item:</label>
-        <input
-          type="number"
-          id="price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          placeholder="Enter price of the item"
-        />
-        <label htmlFor="cash">Cash Provided:</label>
-        <input
-          type="number"
-          id="cash"
-          value={cash}
-          onChange={(e) => setCash(e.target.value)}
-          placeholder="Enter cash provided"
-        />
-        <button onClick={handlePurchase}>Purchase</button>
-      </div>
-      <div className="section result-section">
-        <div id="total-amount">
-          <p><strong>Total Amount:</strong> ${totalAmount}</p>
+      <div className="container">
+        <div className="section input-section">
+          <label htmlFor="price">Price of Item:</label>
+          <input
+            type="number"
+            id="price"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            placeholder="Enter price of the item"
+          />
+          <label htmlFor="cash">Cash Provided:</label>
+          <input
+            type="number"
+            id="cash"
+            value={cash}
+            onChange={(e) => setCash(e.target.value)}
+            placeholder="Enter cash provided"
+          />
+          <button onClick={handlePurchase}>Purchase</button>
         </div>
-        <div id="given-cash">
-          <p><strong>Given Cash:</strong> ${givenCash}</p>
+        <div className="section result-section">
+          <div id="total-amount">
+            <p><strong>Total Amount:</strong> ${totalAmount}</p>
+          </div>
+          <div id="given-cash">
+            <p><strong>Given Cash:</strong> ${givenCash}</p>
+          </div>
+          <div id="balance-amount">
+            <p><strong>Balance Amount:</strong> ${balanceAmount}</p>
+          </div>
+          <div id="change-due" dangerouslySetInnerHTML={{ __html: changeDue }}></div>
+          <div className="change-breakdown">
+            <p><strong>Change Breakdown:</strong></p>
+            {changeBreakdown.map((item) => (
+              <p key={item[0]}>
+                {item[0]}: {item[1]}
+              </p>
+            ))}
+          </div>
         </div>
-        <div id="balance-amount">
-          <p><strong>Balance Amount:</strong> ${balanceAmount}</p>
+        <div className="section" id="cash-drawer-display">
+          <div className="cash-drawer-section">
+            <p><strong>Initial Cash in Drawer:</strong></p>
+            {initialBillsAndCoins.map((money) => (
+              <p key={money[0]}>
+                {money[0]}: {money[1]} pcs
+              </p>
+            ))}
+          </div>
+          <div className="cash-drawer-section">
+            <p><strong>Cash in Drawer After Purchase:</strong></p>
+            {updatedBillsAndCoins.map((money) => (
+              <p key={money[0]}>
+                {money[0]}: {money[1]} pcs
+              </p>
+            ))}
+          </div>
         </div>
-        <div id="change-due" dangerouslySetInnerHTML={{ __html: changeDue }}></div>
-        <div className="change-breakdown">
-          <p><strong>Change Breakdown:</strong></p>
-          {changeBreakdown.map((item) => (
-            <p key={item[0]}>
-              {item[0]}: {item[1]}
-            </p>
-          ))}
-        </div>
-      </div>
-      <div className="section" id="cash-drawer-display">
-        <p><strong>Initial Cash in Drawer:</strong></p>
-        {initialBillsAndCoins.map((money) => (
-          <p key={money[0]}>
-            {money[0]}: {money[1]} pcs
-          </p>
-        ))}
-        <p><strong>Cash in Drawer After Purchase:</strong></p>
-        {updatedBillsAndCoins.map((money) => (
-          <p key={money[0]}>
-            {money[0]}: {money[1]} pcs
-          </p>
-        ))}
       </div>
     </div>
   );
