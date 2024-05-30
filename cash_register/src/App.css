@@ -1,37 +1,100 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
+/* Reset some basic styles for consistency */
+body, html {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f9f9f9;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   height: 100vh;
 }
 
-input[type="number"] {
-  padding: 10px;
-  font-size: 16px;
-  margin-right: 10px;
+/* Container for the whole app */
+.app {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 90%;
+  max-width: 600px;
 }
 
-button {
-  padding: 10px 20px;
+/* Header */
+.header {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  text-align: center;
+}
+
+/* Section styles */
+.section {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+/* Input section */
+.input-section label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.input-section input {
+  width: calc(100% - 32px);
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   font-size: 16px;
-  background-color: #007bff;
-  color: #fff;
+}
+
+.input-section button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
+  color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
+  font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-button:hover {
-  background-color: #0056b3;
+.input-section button:hover {
+  background-color: #45a049;
 }
 
-#change-due {
-  margin-top: 20px;
+/* Result section */
+.result-section p {
+  margin: 8px 0;
   font-size: 18px;
+}
+
+.change-breakdown p {
+  margin: 4px 0;
+  font-size: 16px;
+}
+
+/* Cash drawer display */
+#cash-drawer-display {
+  background-color: #f7f7f7;
+  padding: 16px;
+  border-top: 1px solid #eee;
+}
+
+#cash-drawer-display p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+strong {
+  color: #333;
 }

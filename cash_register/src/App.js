@@ -18,6 +18,7 @@ function App() {
   const [price, setPrice] = useState('');
   const [cash, setCash] = useState('');
   const [changeDue, setChangeDue] = useState('');
+  const [changeBreakdown, setChangeBreakdown] = useState([]);
 
   const formatResults = (status, change) => {
     return (
@@ -44,6 +45,7 @@ function App() {
 
     if (cashProvided === purchasePrice) {
       setChangeDue('No change due - customer paid with exact cash');
+      setChangeBreakdown([]);
       setCash('');
       return;
     }
@@ -58,12 +60,15 @@ function App() {
 
     if (totalCID < changeDue) {
       setChangeDue('Status: INSUFFICIENT_FUNDS');
+      setChangeBreakdown([]);
       return;
     }
 
     if (totalCID === changeDue) {
       result.status = 'CLOSED';
     }
+
+    let changeArr = [];
 
     for (let i = 0; i < reversedCid.length; i++) {
       if (changeDue >= denominations[i] && changeDue > 0) {
@@ -76,16 +81,19 @@ function App() {
         }
         if (count > 0) {
           result.change.push([reversedCid[i][0], count * denominations[i]]);
+          changeArr.push([reversedCid[i][0], count]);
         }
       }
     }
 
     if (changeDue > 0) {
       setChangeDue('Status: INSUFFICIENT_FUNDS');
+      setChangeBreakdown([]);
       return;
     }
 
     setChangeDue(formatResults(result.status, result.change));
+    setChangeBreakdown(changeArr);
     updateUI(result.change);
   };
 
@@ -120,24 +128,36 @@ function App() {
 
   return (
     <div className="app">
-      <label htmlFor="price">Price of Item:</label>
-      <input
-        type="number"
-        id="price"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        placeholder="Enter price of the item"
-      />
-      <label htmlFor="cash">Cash Provided:</label>
-      <input
-        type="number"
-        id="cash"
-        value={cash}
-        onChange={(e) => setCash(e.target.value)}
-        placeholder="Enter cash provided"
-      />
-      <button onClick={handlePurchase}>Purchase</button>
-      <div id="change-due">{changeDue}</div>
+      <div className="input-section">
+        <label htmlFor="price">Price of Item:</label>
+        <input
+          type="number"
+          id="price"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          placeholder="Enter price of the item"
+        />
+        <label htmlFor="cash">Cash Provided:</label>
+        <input
+          type="number"
+          id="cash"
+          value={cash}
+          onChange={(e) => setCash(e.target.value)}
+          placeholder="Enter cash provided"
+        />
+        <button onClick={handlePurchase}>Purchase</button>
+      </div>
+      <div className="result-section">
+        <div id="change-due" dangerouslySetInnerHTML={{ __html: changeDue }}></div>
+        <div className="change-breakdown">
+          <p><strong>Change Breakdown:</strong></p>
+          {changeBreakdown.map((item) => (
+            <p key={item[0]}>
+              {item[0]}: {item[1]}
+            </p>
+          ))}
+        </div>
+      </div>
       <div id="cash-drawer-display">
         <p><strong>Change in drawer:</strong></p>
         {cid.map((money) => (
